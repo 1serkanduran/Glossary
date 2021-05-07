@@ -33,8 +33,8 @@ namespace McvProjeKampi.Controllers
         public ActionResult AddCategory(Category p)
         {
             //cm.CategoryAddBL(p);
-            CategoryValidator categoriValidator = new CategoryValidator();
-            ValidationResult results = categoriValidator.Validate(p);
+            CategoryValidator categoryValidator = new CategoryValidator();
+            ValidationResult results = categoryValidator.Validate(p);
             if (results.IsValid)
             {
                 cm.CategoryAdd(p);
