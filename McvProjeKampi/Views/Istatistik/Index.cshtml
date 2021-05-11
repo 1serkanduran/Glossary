@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdmimLayout.cshtml";
+}
+<br />
+<h3>İstatistikler</h3>
+<br />
+<div class="card-deck">
+    <div class="card text-white bg-primary mb-4 ">
+        <div class="card-header">Toplam Kategori Sayısı</div>
+        <div class="card-body">
+            <h5 class="card-title">@ViewBag.CategoryCount</h5>
+        </div>
+    </div>
+    <div class="card text-white bg-secondary mb-4 ">
+        <div class="card-header">Yazılım Kategorisi Başlık Sayısı</div>
+        <div class="card-body">
+            <h5 class="card-title">@ViewBag.Heading</h5>
+        </div>
+    </div>
+    <div class="card text-white bg-success mb-4 ">
+        <div class="card-header">Yazar adında 'a' harfi geçen yazar sayısı</div>
+        <div class="card-body">
+            <h5 class="card-title">@ViewBag.Writer</h5>
+        </div>
+    </div>
+</div>
+<div class="card-deck">
+
+
+    <div class="card text-white bg-danger mb-6 ">
+        <div class="card-header">En Fazla Başlığı Olan Kategori Adı</div>
+        <div class="card-body">
+            <h5 class="card-title">@ViewBag.HeadingCategory</h5>
+        </div>
+    </div>
+    <div class="card text-white bg-info mb-6 ">
+        <div class="card-header">Kategoriler Tablosunda Durum Farkı </div>
+        <div class="card-body">
+            <h5 class="card-title">@ViewBag.Minus</h5>
+        </div>
+    </div>
+</div>
+
