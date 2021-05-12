@@ -23,7 +23,8 @@ namespace McvProjeKampi.Controllers
             var ex3 = c.Writers.Count(x => x.WriterName.Contains("a"));
             ViewBag.Writer = ex3;
             //En fazla başlığa sahip kategori adı
-            var ex4 = c.Headings.Max(x => x.Category.CategoryName);
+            var ex4 = c.Categories.Where(u => u.CategoryID == c.Headings.GroupBy(x => x.CategoryID).OrderByDescending(x => x.Count())
+               .Select(x => x.Key).FirstOrDefault()).Select(x => x.CategoryName).FirstOrDefault();
             ViewBag.HeadingCategory = ex4;
             //Kategori tablosunda durumu true olan kategoriler ile false olan kategoriler arasındaki sayısal fark
             var ex5 = c.Categories.Count(x => x.CategoryStatus == true) - c.Categories.Count(x => x.CategoryStatus == false);
