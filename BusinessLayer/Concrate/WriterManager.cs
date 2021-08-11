@@ -28,6 +28,11 @@ namespace BusinessLayer.Concrate
             return _writerDal.List();
         }
 
+        public object GetWriter(string writerMail, string result)
+        {
+            throw new NotImplementedException();
+        }
+
         public void WriterAdd(Writer writer)
         {
             _writerDal.Insert(writer);

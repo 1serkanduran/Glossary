@@ -16,7 +16,7 @@ namespace BusinessLayer.ValidationRules
             RuleFor(x => x.ReceiverMail).NotEmpty().WithMessage("Alıcı adresini boş geçemezsiniz.");
             RuleFor(x => x.Subject).NotEmpty().WithMessage("Konuyu boş geçemezsiniz.");
             RuleFor(x => x.MessageContent).NotEmpty().WithMessage("Mesajı boş geçemezsiniz.");
-
+            RuleFor(x => x.ReceiverMail).EmailAddress().WithMessage("Email adresiniz geçerli formatta değil. Lütfen geçerli formatta giriniz!");
             RuleFor(x => x.Subject).MinimumLength(3).WithMessage(" Lütfen en az 3 karakter girişi yapın");
             RuleFor(x => x.Subject).MaximumLength(50).WithMessage(" Konu en fazla 100 karakter olmalı");
 
