@@ -1,0 +1,80 @@
+﻿@using EntityLayer.Concrete
+@model List<Admin>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@{
+
+    string statusColor = "";
+    string checkStatus = "";
+    string buttonStatusColor = "";
+    string adminStatus = "";
+}
+<br />
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Kullanıcı Mail</th>
+        <th>Yetki</th>
+        <th>Durum</th>
+        <th>Aktif Yap</th>
+        <th>Yetki Değiştir</th>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        switch (item.AdminStatus)
+        {
+            case true:
+                statusColor = "badge rounded-pill bg-success";
+                buttonStatusColor = "btn btn-danger";
+                break;
+            case false:
+                statusColor = "badge rounded-pill bg-danger";
+                buttonStatusColor = "btn btn-success";
+                break;
+        }
+        if (item.AdminStatus == false)
+        {
+
+            checkStatus = "Aktif Yap";
+        }
+        else
+        {
+            checkStatus = "Pasif Yap";
+        }
+
+        if (@item.AdminStatus)
+        {
+            adminStatus = "Aktif";
+        }
+        else
+        {
+            adminStatus = "Pasif";
+        }
+
+        <tr>
+            <td>@item.AdminID</td>
+            <td>@item.AdminUserName</td>
+            <td>@item.AdminRole</td>
+            <td class="project-state">
+                <span class="@statusColor">@adminStatus</span>
+            </td>
+            <td>
+                <a class="@buttonStatusColor btn-sm" href="/Authorization/AdminDelete/@item.AdminID">
+                    @checkStatus
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-warning" href="/Authorization/EditAdmin/@item.AdminID">
+                    Yetkiyi Değiştir
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+<a href="/Authorization/AddAdmin/" class="btn btn-info">Admin Ekle</a>
+

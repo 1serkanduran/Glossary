@@ -1,0 +1,39 @@
+﻿@model IEnumerable<EntityLayer.Concrete.Category>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{ string color = " ";}
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Adı</th>
+        <th>Açıklama</th>
+        <th>Durum</th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+        <th>Başlıklar</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        if (item.CategoryStatus==true)
+        {
+            color = "badge badge-success";
+        }
+        if (item.CategoryStatus==false)
+        {
+            color = "badge badge-danger";
+        }
+        <tr>
+            <th>@item.CategoryID</th>
+            <td>@item.CategoryName</td>
+            <td>@item.CategoryDescription</td>
+            <td class="project-state"><span class="@color">@item.CategoryStatus</span></td>
+            <td><a href="/AdminCategory/DeleteCategory/@item.CategoryID" class="btn btn-danger">Sil</a></td>
+            <td><a href="/AdminCategory/EditCategory/@item.CategoryID" class="btn btn-warning">Güncelle</a></td>
+            <td><a href="" class="btn btn-primary">Başlıklar</a></td>
+        </tr>
+    }
+</table>
+<a href="/AdminCategory/AddCategory" class="btn btn-dark">Kategori Ekle</a>
+

@@ -1,0 +1,71 @@
+﻿@using EntityLayer.Concrete
+@model List<About>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+
+    string statusColor = "";
+    string checkStatus = "";
+    string buttonStatusColor = "";
+    string aboutStatus = "";
+}
+<br />
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Hakkımda Başlığı</th>
+        <th>Durum</th>
+        <th>Aktif Yap</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        switch (item.AboutStatus)
+        {
+            case true:
+                statusColor = "badge rounded-pill bg-success";
+                buttonStatusColor = "btn btn-danger";
+                break;
+            case false:
+                statusColor = "badge rounded-pill bg-danger";
+                buttonStatusColor = "btn btn-success";
+                break;
+        }
+        if (item.AboutStatus == false)
+        {
+
+            checkStatus = "Aktif Yap";
+        }
+        else
+        {
+            checkStatus = "Pasif Yap";
+        }
+
+        if (@item.AboutStatus)
+        {
+            aboutStatus = "Aktif";
+        }
+        else
+        {
+            aboutStatus = "Pasif";
+        }
+
+        <tr>
+            <td>@item.AboutID</td>
+            <td>@item.AboutDetails1</td>
+            <td class="project-state">
+                <span class="@statusColor">@aboutStatus</span>
+            </td>
+            <td>
+                <a class="@buttonStatusColor btn-sm" href="/About/AboutDelete/@item.AboutID">
+                    @checkStatus
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+
+
+@Html.Action("AboutPartial", "About")
