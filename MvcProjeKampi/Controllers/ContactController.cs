@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static System.Collections.Specialized.BitVector32;
 
 namespace MvcProjeKampi.Controllers
 {
     public class ContactController : Controller
     {
-        private MessageManager _messageManager = new MessageManager(new EfMessageDal());
+        MessageManager _messageManager = new MessageManager(new EfMessageDal());
         ContactManager cm = new ContactManager(new EfContactDal());
         ContactValidator cv= new ContactValidator();
 
@@ -28,7 +29,7 @@ namespace MvcProjeKampi.Controllers
         }
         public PartialViewResult MessageLeftMenu()
         {
-            string userEmail = (string)Session["WriterMail"];
+            string userEmail = (string)Session["AdminUserName"];
             var contactList = cm.GetAll();
             ViewBag.contactCount = contactList.Count();
             var listResult = _messageManager.GetListSendInbox(userEmail);
@@ -36,8 +37,8 @@ namespace MvcProjeKampi.Controllers
             ViewBag.sendCount = sendList.Count();
             var listResult2 = _messageManager.GetListInbox(userEmail);
             ViewBag.inboxCount = listResult2.Count();
-            var drafList = listResult.FindAll(x => x.IsDraft == true);
-            ViewBag.draftCount = drafList.Count();
+            var draftMail = _messageManager.GetListDraft(userEmail).Count();
+            ViewBag.draftMail = draftMail; 
             return PartialView();
         }
 

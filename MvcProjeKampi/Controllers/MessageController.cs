@@ -19,13 +19,13 @@ namespace MvcProjeKampi.Controllers
         [Authorize]
         public ActionResult Inbox()
         {
-            string userEmail = (string)Session["WriterMail"];
+            string userEmail = (string)Session["AdminUserName"];
             var result =cm.GetListInbox(userEmail);
             return View(result);
         }
         public ActionResult Sendbox()
         {
-            string userEmail = (string)Session["WriterMail"];
+            string userEmail = (string)Session["AdminUserName"];
             var result =cm.GetListSendInbox(userEmail);
             return View(result);
         }
@@ -47,13 +47,14 @@ namespace MvcProjeKampi.Controllers
         [HttpPost]
         public ActionResult NewMessage(Message p, string button)
         {
+            string userEmail = (string)Session["AdminUserName"];
             ValidationResult results = messagevalidator.Validate(p);
             if (button == "draft")
             {
                 if (results.IsValid)
                 {
                     p.MessageDate = DateTime.Parse(DateTime.Now.ToShortDateString());
-                    p.SenderMail = "admin@gmail.com";
+                    p.SenderMail = userEmail;
                     p.IsDraft = true;
                     cm.MessageAddBL(p);
                     return RedirectToAction("Draft"); ;
@@ -71,9 +72,9 @@ namespace MvcProjeKampi.Controllers
                 results=messagevalidator.Validate(p);
                 if (results.IsValid)
                 {
-                    p.MessageDate = DateTime.Now;
-                    p.SenderMail = "admin@gmail.com";
-                    p.IsDraft = false;
+                    p.MessageDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+                    p.SenderMail = userEmail;
+                    //p.IsDraft = false;
                     cm.MessageAddBL(p);
                     return RedirectToAction("SendBox");
                 }
@@ -89,10 +90,9 @@ namespace MvcProjeKampi.Controllers
         }
         public ActionResult Draft()
         {
-            string userMail = (string)Session["WriterMail"];
-            var sendList = cm.GetListSendInbox(userMail);
-            var draftList =sendList.FindAll(x=>x.IsDraft==true);
-            return View(draftList);
+            string userMail = (string)Session["AdminUserName"];
+            var result=cm.IsDraft(userMail);
+            return View(result);
         }
         public ActionResult GetDraftMessageDetails(int id)
         {

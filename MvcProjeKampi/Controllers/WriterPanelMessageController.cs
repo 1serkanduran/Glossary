@@ -39,8 +39,8 @@ namespace MvcProjeKampi.Controllers
             ViewBag.sendCount = sendList.Count();
             var listResult2 = mm.GetListInbox(userEmail);
             ViewBag.inboxCount = listResult2.Count();
-            var drafList = listResult.FindAll(x => x.IsDraft == true);
-            ViewBag.draftCount = drafList.Count();
+            var draftMail = mm.GetListDraft(userEmail).Count();
+            ViewBag.draftMail = draftMail;
             return PartialView();
         }
         public ActionResult GetInBoxMessageDetails(int id)
@@ -60,21 +60,19 @@ namespace MvcProjeKampi.Controllers
         }
 
         [HttpPost]
-        public ActionResult NewMessage(Message message, string button)
+        public ActionResult NewMessage(Message p, string button)
         {
             string userEmail = (string)Session["WriterMail"];
-            ValidationResult results = messageValidator.Validate(message);
+            ValidationResult results = messageValidator.Validate(p);
             if (button == "draft")
             {
-
-                results = messageValidator.Validate(message);
                 if (results.IsValid)
                 {
-                    message.MessageDate = DateTime.Parse(DateTime.Now.ToShortDateString());
-                    message.SenderMail = userEmail;
-                    message.IsDraft = true;
-                    mm.MessageAddBL(message);
-                    return RedirectToAction("Draft");
+                    p.MessageDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+                    p.SenderMail = userEmail;
+                    p.IsDraft = true;
+                    mm.MessageAddBL(p);
+                    return RedirectToAction("Draft"); ;
                 }
                 else
                 {
@@ -86,13 +84,13 @@ namespace MvcProjeKampi.Controllers
             }
             else if (button == "save")
             {
-                results = messageValidator.Validate(message);
+                results = messageValidator.Validate(p);
                 if (results.IsValid)
                 {
-                    message.MessageDate = DateTime.Now;
-                    message.SenderMail = userEmail;
-                    message.IsDraft = false;
-                    mm.MessageAddBL(message);
+                    p.MessageDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+                    p.SenderMail = userEmail;
+                    //p.IsDraft = false;
+                    mm.MessageAddBL(p);
                     return RedirectToAction("SendBox");
                 }
                 else
@@ -107,10 +105,9 @@ namespace MvcProjeKampi.Controllers
         }
         public ActionResult Draft()
         {
-            string userEmail = (string)Session["WriterMail"];
-            var sendList = mm.GetListSendInbox(userEmail);
-            var draftList = sendList.FindAll(x => x.IsDraft == true);
-            return View(draftList);
+            string userMail = (string)Session["WriterMail"];
+            var result = mm.IsDraft(userMail);
+            return View(result);
         }
 
         public ActionResult GetDraftMessageDetails(int id)
